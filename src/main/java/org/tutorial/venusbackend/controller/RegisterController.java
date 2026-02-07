@@ -27,14 +27,12 @@ public class RegisterController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
 
-        // Check if email already exists
         if (repository.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity
                     .badRequest()
                     .body(Collections.singletonMap("message", "Email already exists"));
         }
 
-        // Map DTO to entity
         MyUser user = new MyUser();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -42,7 +40,7 @@ public class RegisterController {
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setAddress(request.getAddress());
-        user.setRole("USER");  // default role
+        user.setRole("USER");
         user.setCreatedAt(LocalDateTime.now());
         user.setActive(true);
 

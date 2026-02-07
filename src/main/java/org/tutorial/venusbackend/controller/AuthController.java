@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tutorial.venusbackend.model.LoginRequest;
 import org.tutorial.venusbackend.model.MyUser;
+import org.tutorial.venusbackend.service.JwtService;
 import org.tutorial.venusbackend.service.MyUserDetails;
 
 import java.util.Map;
@@ -24,6 +25,9 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
 
+    @Autowired
+    private JwtService jwtService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         try {
@@ -34,10 +38,13 @@ public class AuthController {
             MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
             MyUser user = userDetails.getUser();
 
+            String jwt = jwtService.generateToken(userDetails);
+
             return ResponseEntity.ok(Map.of(
                     "id", user.getId(),
                     "email", user.getEmail(),
-                    "role", user.getRole()
+                    "role", user.getRole(),
+                    "token", jwt
             ));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
