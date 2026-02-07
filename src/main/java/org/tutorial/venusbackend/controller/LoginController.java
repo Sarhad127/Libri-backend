@@ -19,7 +19,7 @@ import org.tutorial.venusbackend.service.MyUserDetails;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired

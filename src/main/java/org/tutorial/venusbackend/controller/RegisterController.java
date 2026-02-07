@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class RegisterController {
 
     @Autowired
