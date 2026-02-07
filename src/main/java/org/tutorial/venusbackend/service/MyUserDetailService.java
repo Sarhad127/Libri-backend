@@ -20,11 +20,4 @@ public class MyUserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new MyUserDetails(user);
     }
-
-    private String[] getRoles(MyUser user) {
-        if (user.getRole() == null) {
-            return new String[]{"USER"};
-        }
-        return user.getRole().split(",");
-    }
 }

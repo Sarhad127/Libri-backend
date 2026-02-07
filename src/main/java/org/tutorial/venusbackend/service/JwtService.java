@@ -18,10 +18,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("U29tZVN1cGVyU2VjcmV0S2V5VGhhdFNob3VsZEJlQmFzZTY0")
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("360000")
+    @Value("${jwt.validity}")
     private long jwtExpiration;
 
     public String extractUsername(String token) {

@@ -1,4 +1,4 @@
-package org.tutorial.venusbackend.model;
+package org.tutorial.venusbackend.dto;
 
 import lombok.Data;
 
