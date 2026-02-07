@@ -9,7 +9,6 @@ import java.security.Key;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.tutorial.venusbackend.model.MyUser;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,14 +34,7 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return buildToken(new HashMap<String, Object>(), userDetails, jwtExpiration);
-    }
-
-    public String generateToken(UserDetails userDetails, MyUser user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRole());
-        claims.put("id", user.getId());
-        return buildToken(claims, userDetails, jwtExpiration);
+        return buildToken(new HashMap<>(), userDetails, jwtExpiration);
     }
 
     private String buildToken(
