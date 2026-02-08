@@ -32,21 +32,20 @@ public class ReviewController {
             @RequestHeader("Authorization") String authHeader
     ) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Missing or invalid Authorization header");
         }
 
         String token = authHeader.substring(7);
-
         String email;
         try {
             email = jwtService.extractUsername(token);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid token: " + e.getMessage());
         }
 
-        MyUser user = userRepository.findByEmail(email)
-                .orElse(null);
-
+        MyUser user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
@@ -61,10 +60,22 @@ public class ReviewController {
         review.setComment(request.getComment());
         review.setCreatedAt(LocalDateTime.now());
 
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
 
-        return ResponseEntity.ok(review);
+        // Use DTO to avoid circular references
+        ReviewResponse response = new ReviewResponse(
+                savedReview.getId(),
+                savedReview.getRating(),
+                savedReview.getComment(),
+                savedReview.getUser() != null && savedReview.getUser().getFirstName() != null
+                        ? savedReview.getUser().getFirstName()
+                        : "Anonymous",
+                savedReview.getCreatedAt()
+        );
+
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/{bookId}/reviews")
     public ResponseEntity<?> getReviewsForBook(@PathVariable Long bookId) {
