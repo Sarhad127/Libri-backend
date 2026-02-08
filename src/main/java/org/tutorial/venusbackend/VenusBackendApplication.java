@@ -59,6 +59,144 @@ public class VenusBackendApplication {
             } else {
                 System.out.println("Book already exists: Harry Potter and the Philosopher's Stone");
             }
+            Author rowling = authorRepository.findByName("J.K. Rowling")
+                    .stream()
+                    .findFirst()
+                    .orElseGet(() -> {
+                        Author newAuthor = new Author();
+                        newAuthor.setName("J.K. Rowling");
+                        return authorRepository.save(newAuthor);
+                    });
+
+            boolean exists2 = bookRepository.findByIsbn("9780439064873").isPresent();
+            if (!exists2) {
+                Book book2 = new Book();
+                book2.setTitle("Harry Potter and the Chamber of Secrets");
+                book2.setCategory("Fantasy");
+                book2.setFormat("Inbunden");
+                book2.setLanguage("English");
+                book2.setSeriesName("Harry Potter");
+                book2.setSeriesNumber(2);
+                book2.setPublisher("Bloomsbury");
+                book2.setDescription("Harry Potter's second year at Hogwarts is full of mysterious messages and the legend of the Chamber of Secrets.");
+                book2.setAuthor(rowling);
+                book2.setIsbn("9780439064873");
+                book2.setAmount(12);
+                book2.setCreatedAt(LocalDateTime.now());
+                book2.setUpdatedAt(LocalDateTime.now());
+                book2.setImageUrl("https://media.harrypotterfanzone.com/chamber-of-secrets-uk-childrens-edition.jpg");
+
+                book2.setReviews(new ArrayList<>());
+                book2.setFavoritedBy(new ArrayList<>());
+                book2.setBorrowHistory(new ArrayList<>());
+
+                bookRepository.save(book2);
+                System.out.println("Seeded book: " + book2.getTitle());
+            }
+
+            boolean exists3 = bookRepository.findByIsbn("9780439136365").isPresent();
+            if (!exists3) {
+                Book book3 = new Book();
+                book3.setTitle("Harry Potter and the Prisoner of Azkaban");
+                book3.setCategory("Fantasy");
+                book3.setFormat("Inbunden");
+                book3.setLanguage("English");
+                book3.setSeriesName("Harry Potter");
+                book3.setSeriesNumber(3);
+                book3.setPublisher("Bloomsbury");
+                book3.setDescription("Harry's third year at Hogwarts is threatened by the escaped prisoner Sirius Black, who is believed to be after him.");
+                book3.setAuthor(rowling);
+                book3.setIsbn("9780439136365");
+                book3.setAmount(15);
+                book3.setCreatedAt(LocalDateTime.now());
+                book3.setUpdatedAt(LocalDateTime.now());
+                book3.setImageUrl("https://m.media-amazon.com/images/I/816KXCejhwL._AC_UF1000,1000_QL80_.jpg");
+
+                book3.setReviews(new ArrayList<>());
+                book3.setFavoritedBy(new ArrayList<>());
+                book3.setBorrowHistory(new ArrayList<>());
+
+                bookRepository.save(book3);
+                System.out.println("Seeded book: " + book3.getTitle());
+            }
+
+            boolean exists4 = bookRepository.findByIsbn("9780439139595").isPresent();
+            if (!exists4) {
+                Book book4 = new Book();
+                book4.setTitle("Harry Potter and the Goblet of Fire");
+                book4.setCategory("Fantasy");
+                book4.setFormat("Inbunden");
+                book4.setLanguage("English");
+                book4.setSeriesName("Harry Potter");
+                book4.setSeriesNumber(4);
+                book4.setPublisher("Bloomsbury");
+                book4.setDescription("Harry competes in the dangerous Triwizard Tournament and faces new dark forces in his fourth year.");
+                book4.setAuthor(rowling);
+                book4.setIsbn("9780439139595");
+                book4.setAmount(10);
+                book4.setCreatedAt(LocalDateTime.now());
+                book4.setUpdatedAt(LocalDateTime.now());
+                book4.setImageUrl("https://m.media-amazon.com/images/I/91-LL7OnDCL._AC_UF1000,1000_QL80_.jpg");
+
+                book4.setReviews(new ArrayList<>());
+                book4.setFavoritedBy(new ArrayList<>());
+                book4.setBorrowHistory(new ArrayList<>());
+
+                bookRepository.save(book4);
+                System.out.println("Seeded book: " + book4.getTitle());
+            }
+
+            boolean exists5 = bookRepository.findByIsbn("9780439358071").isPresent();
+            if (!exists5) {
+                Book book5 = new Book();
+                book5.setTitle("Harry Potter and the Order of the Phoenix");
+                book5.setCategory("Fantasy");
+                book5.setFormat("Inbunden");
+                book5.setLanguage("English");
+                book5.setSeriesName("Harry Potter");
+                book5.setSeriesNumber(5);
+                book5.setPublisher("Bloomsbury");
+                book5.setDescription("In his fifth year, Harry battles the Ministry of Magic and the growing threat of Voldemort with his friends.");
+                book5.setAuthor(rowling);
+                book5.setIsbn("9780439358071");
+                book5.setAmount(12);
+                book5.setCreatedAt(LocalDateTime.now());
+                book5.setUpdatedAt(LocalDateTime.now());
+                book5.setImageUrl("https://m.media-amazon.com/images/I/81CVqFSEO0L._AC_UF894,1000_QL80_.jpg");
+
+                book5.setReviews(new ArrayList<>());
+                book5.setFavoritedBy(new ArrayList<>());
+                book5.setBorrowHistory(new ArrayList<>());
+
+                bookRepository.save(book5);
+                System.out.println("Seeded book: " + book5.getTitle());
+            }
+
+            boolean exists6 = bookRepository.findByIsbn("9780545010221").isPresent();
+            if (!exists6) {
+                Book book6 = new Book();
+                book6.setTitle("Harry Potter and the Half-Blood Prince");
+                book6.setCategory("Fantasy");
+                book6.setFormat("Inbunden");
+                book6.setLanguage("English");
+                book6.setSeriesName("Harry Potter");
+                book6.setSeriesNumber(6);
+                book6.setPublisher("Bloomsbury");
+                book6.setDescription("Harry discovers a mysterious book that once belonged to the Half-Blood Prince while Voldemort's threat grows.");
+                book6.setAuthor(rowling);
+                book6.setIsbn("9780545010221");
+                book6.setAmount(8);
+                book6.setCreatedAt(LocalDateTime.now());
+                book6.setUpdatedAt(LocalDateTime.now());
+                book6.setImageUrl("https://m.media-amazon.com/images/I/813zbNPhO5L._UF1000,1000_QL80_.jpg");
+
+                book6.setReviews(new ArrayList<>());
+                book6.setFavoritedBy(new ArrayList<>());
+                book6.setBorrowHistory(new ArrayList<>());
+
+                bookRepository.save(book6);
+                System.out.println("Seeded book: " + book6.getTitle());
+            }
         };
-    }
+    };
 }
