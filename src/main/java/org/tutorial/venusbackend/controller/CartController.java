@@ -99,11 +99,14 @@ public class CartController {
             return ResponseEntity.status(403).build();
         }
 
-        cartItemRepository.delete(item);
         Cart cart = item.getCart();
-        if (cartItemRepository.findByCart(cart).isEmpty()) {
+        cartItemRepository.delete(item);
+
+        long remaining = cartItemRepository.countByCart(cart);
+        if (remaining == 0) {
             cartRepository.delete(cart);
         }
+
         return ResponseEntity.ok(Collections.singletonMap("message", "Cart item removed"));
     }
 
