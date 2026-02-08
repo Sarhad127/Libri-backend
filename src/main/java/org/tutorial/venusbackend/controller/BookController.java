@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.repository.BookRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class BookController {
         public LocalDateTime createdAt;
         public LocalDateTime updatedAt;
         public String imageUrl;
+        public BigDecimal price;
 
         public BookDto(Book book) {
             this.id = book.getId();
@@ -54,11 +56,12 @@ public class BookController {
             this.publisher = book.getPublisher();
             this.description = book.getDescription();
             this.author = book.getAuthor().getName();
-            this.amount = book.getAmount();
+            this.amount = book.getStock();
             this.isbn = book.getIsbn();
             this.createdAt = book.getCreatedAt();
             this.updatedAt = book.getUpdatedAt();
             this.imageUrl = book.getImageUrl();
+            this.price = book.getPrice();
         }
     }
 }

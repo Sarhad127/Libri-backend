@@ -40,7 +40,5 @@ public class MyUser {
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
     private List<Book> favoriteBooks;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BorrowedBook> borrowedBooks;
+    
 }

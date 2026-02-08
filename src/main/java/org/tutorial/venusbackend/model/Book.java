@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +40,22 @@ public class Book {
     private Author author;
 
     private String isbn;
-    private int amount;
+    private int stock;
     private String imageUrl;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+
+    @Column(nullable = false)
+    private BigDecimal price;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favoriteBooks")
     private List<MyUser> favoritedBy = new ArrayList<>();
-
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<BorrowedBook> borrowHistory = new ArrayList<>();
 }
