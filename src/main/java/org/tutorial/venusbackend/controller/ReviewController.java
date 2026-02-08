@@ -62,7 +62,6 @@ public class ReviewController {
 
         Review savedReview = reviewRepository.save(review);
 
-        // Use DTO to avoid circular references
         ReviewResponse response = new ReviewResponse(
                 savedReview.getId(),
                 savedReview.getRating(),
