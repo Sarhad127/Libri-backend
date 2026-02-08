@@ -44,6 +44,7 @@ public class LoginController {
                     "id", user.getId(),
                     "email", user.getEmail(),
                     "role", user.getRole(),
+                    "firstName", user.getFirstName(),
                     "token", jwt
             ));
         } catch (AuthenticationException e) {
