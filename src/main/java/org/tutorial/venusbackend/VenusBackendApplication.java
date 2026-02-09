@@ -38,8 +38,8 @@ public class VenusBackendApplication {
                 Book book = new Book();
                 book.setTitle("Harry Potter and the Philosopher's Stone");
                 book.setCategory("Fantasy");
-                book.setFormat("Inbunden");
-                book.setLanguage("English");
+                book.setFormat("Hardcover");
+                book.setLanguage("Swedish");
                 book.setSeriesName("Harry Potter");
                 book.setSeriesNumber(1);
                 book.setPublisher("Bloomsbury");
@@ -73,7 +73,7 @@ public class VenusBackendApplication {
                 Book book2 = new Book();
                 book2.setTitle("Harry Potter and the Chamber of Secrets");
                 book2.setCategory("Fantasy");
-                book2.setFormat("Inbunden");
+                book2.setFormat("Paperback");
                 book2.setLanguage("English");
                 book2.setSeriesName("Harry Potter");
                 book2.setSeriesNumber(2);
@@ -87,7 +87,7 @@ public class VenusBackendApplication {
                 book2.setImageUrl("https://media.harrypotterfanzone.com/chamber-of-secrets-uk-childrens-edition.jpg");
                 book2.setReviews(new ArrayList<>());
                 book2.setFavoritedBy(new ArrayList<>());
-                book2.setPrice(BigDecimal.valueOf(249.00));
+                book2.setPrice(BigDecimal.valueOf(449.00));
 
                 bookRepository.save(book2);
                 System.out.println("Seeded book: " + book2.getTitle());
@@ -98,7 +98,7 @@ public class VenusBackendApplication {
                 Book book3 = new Book();
                 book3.setTitle("Harry Potter and the Prisoner of Azkaban");
                 book3.setCategory("Fantasy");
-                book3.setFormat("Inbunden");
+                book3.setFormat("Hardcover");
                 book3.setLanguage("English");
                 book3.setSeriesName("Harry Potter");
                 book3.setSeriesNumber(3);
@@ -123,7 +123,7 @@ public class VenusBackendApplication {
                 Book book4 = new Book();
                 book4.setTitle("Harry Potter and the Goblet of Fire");
                 book4.setCategory("Fantasy");
-                book4.setFormat("Inbunden");
+                book4.setFormat("Paperback");
                 book4.setLanguage("English");
                 book4.setSeriesName("Harry Potter");
                 book4.setSeriesNumber(4);
@@ -148,8 +148,8 @@ public class VenusBackendApplication {
                 Book book5 = new Book();
                 book5.setTitle("Harry Potter and the Order of the Phoenix");
                 book5.setCategory("Fantasy");
-                book5.setFormat("Inbunden");
-                book5.setLanguage("English");
+                book5.setFormat("Hardcover");
+                book5.setLanguage("Swedish");
                 book5.setSeriesName("Harry Potter");
                 book5.setSeriesNumber(5);
                 book5.setPublisher("Bloomsbury");
@@ -162,7 +162,7 @@ public class VenusBackendApplication {
                 book5.setImageUrl("https://m.media-amazon.com/images/I/81CVqFSEO0L._AC_UF894,1000_QL80_.jpg");
                 book5.setReviews(new ArrayList<>());
                 book5.setFavoritedBy(new ArrayList<>());
-                book5.setPrice(BigDecimal.valueOf(249.00));
+                book5.setPrice(BigDecimal.valueOf(209.00));
 
                 bookRepository.save(book5);
                 System.out.println("Seeded book: " + book5.getTitle());
@@ -173,7 +173,7 @@ public class VenusBackendApplication {
                 Book book6 = new Book();
                 book6.setTitle("Harry Potter and the Half-Blood Prince");
                 book6.setCategory("Fantasy");
-                book6.setFormat("Inbunden");
+                book6.setFormat("Paperback");
                 book6.setLanguage("English");
                 book6.setSeriesName("Harry Potter");
                 book6.setSeriesNumber(6);
@@ -187,7 +187,7 @@ public class VenusBackendApplication {
                 book6.setImageUrl("https://m.media-amazon.com/images/I/813zbNPhO5L._UF1000,1000_QL80_.jpg");
                 book6.setReviews(new ArrayList<>());
                 book6.setFavoritedBy(new ArrayList<>());
-                book6.setPrice(BigDecimal.valueOf(249.00));
+                book6.setPrice(BigDecimal.valueOf(129.00));
 
                 bookRepository.save(book6);
                 System.out.println("Seeded book: " + book6.getTitle());
