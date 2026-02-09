@@ -48,7 +48,13 @@ public class CartController {
     public ResponseEntity<CartItemResponse> addToCart(Authentication authentication,
                                                       @RequestBody CartItemRequest request) {
         MyUser user = getAuthenticatedUser(authentication);
-        Cart cart = getOrCreateCart(user);
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
 
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -100,10 +106,12 @@ public class CartController {
         }
 
         Cart cart = item.getCart();
-        cartItemRepository.delete(item);
 
-        long remaining = cartItemRepository.countByCart(cart);
-        if (remaining == 0) {
+        cart.getItems().remove(item);
+        cartItemRepository.delete(item);
+        cartItemRepository.flush();
+
+        if (cart.getItems().isEmpty()) {
             cartRepository.delete(cart);
         }
 
@@ -118,10 +126,6 @@ public class CartController {
 
     private Cart getOrCreateCart(MyUser user) {
         return cartRepository.findByUser(user)
-                .orElseGet(() -> {
-                    Cart cart = new Cart();
-                    cart.setUser(user);
-                    return cartRepository.save(cart);
-                });
+                .orElse(null);
     }
 }

@@ -1,11 +1,15 @@
 package org.tutorial.venusbackend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
-@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Review {
 
     @Id
@@ -25,5 +29,6 @@ public class Review {
 
     private String comment;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
 }

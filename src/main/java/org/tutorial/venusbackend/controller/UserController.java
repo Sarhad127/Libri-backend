@@ -22,7 +22,7 @@ public class UserController {
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getAddress(),
-                user.getRole(),
+                user.getRole().name(),
                 user.isActive(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()

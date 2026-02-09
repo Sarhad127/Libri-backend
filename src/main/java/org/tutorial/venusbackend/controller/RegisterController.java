@@ -40,7 +40,7 @@ public class RegisterController {
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setAddress(request.getAddress());
-        user.setRole("USER");
+        user.setRole(MyUser.Role.USER);
         user.setCreatedAt(LocalDateTime.now());
         user.setActive(true);
 

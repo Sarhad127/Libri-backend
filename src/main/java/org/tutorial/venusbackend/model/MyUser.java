@@ -1,14 +1,22 @@
 package org.tutorial.venusbackend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
-@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class MyUser {
+
+    public enum Role {
+        ADMIN, USER
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,12 +25,13 @@ public class MyUser {
     @Column(nullable = false)
     private String password;
 
-    private String role; // ADMIN or USER
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     private String firstName;
     private String lastName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String phoneNumber;
@@ -30,8 +39,14 @@ public class MyUser {
 
     private boolean isActive = true;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
 
     @ManyToMany
     @JoinTable(
@@ -39,6 +54,5 @@ public class MyUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private List<Book> favoriteBooks;
-    
+    private List<Book> favoriteBooks = new ArrayList<>();
 }

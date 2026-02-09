@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.tutorial.venusbackend.model.MyUser;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 import java.util.Arrays;
 
 public class MyUserDetails implements UserDetails {
@@ -23,10 +22,8 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String[] roles = user.getRole() != null ? user.getRole().split(",") : new String[]{"USER"};
-        return Arrays.stream(roles)
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
+        MyUser.Role role = user.getRole() != null ? user.getRole() : MyUser.Role.USER;
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

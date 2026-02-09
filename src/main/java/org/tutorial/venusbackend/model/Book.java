@@ -40,7 +40,10 @@ public class Book {
     private Author author;
 
     private String isbn;
+
+    @Column(nullable = false)
     private int stock;
+
     private String imageUrl;
 
     @CreationTimestamp
@@ -53,7 +56,7 @@ public class Book {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favoriteBooks")
