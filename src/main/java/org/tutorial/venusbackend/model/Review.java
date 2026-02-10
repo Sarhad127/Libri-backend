@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"book_id", "user_id"})
+)
 public class Review {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

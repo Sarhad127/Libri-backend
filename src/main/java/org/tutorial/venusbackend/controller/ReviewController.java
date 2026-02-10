@@ -37,6 +37,12 @@ public class ReviewController {
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
+        boolean alreadyReviewed = reviewRepository.existsByBookAndUser(book, user);
+        if (alreadyReviewed) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("You have already reviewed this book");
+        }
+
         Review review = new Review();
         review.setBook(book);
         review.setUser(user);
@@ -53,7 +59,8 @@ public class ReviewController {
                 savedReview.getUser() != null && savedReview.getUser().getFirstName() != null
                         ? savedReview.getUser().getFirstName()
                         : "Anonymous",
-                savedReview.getCreatedAt()
+                savedReview.getCreatedAt(),
+                savedReview.getId()
         );
 
         return ResponseEntity.ok(response);
@@ -72,7 +79,8 @@ public class ReviewController {
                         r.getUser() != null && r.getUser().getFirstName() != null
                                 ? r.getUser().getFirstName()
                                 : "Anonymous",
-                        r.getCreatedAt()
+                        r.getCreatedAt(),
+                        r.getUser() != null ? r.getUser().getId() : null
                 ))
                 .toList();
 
@@ -107,7 +115,8 @@ public class ReviewController {
                 saved.getUser() != null && saved.getUser().getFirstName() != null
                         ? saved.getUser().getFirstName()
                         : "Anonymous",
-                saved.getCreatedAt()
+                saved.getCreatedAt(),
+                saved.getId()
         );
 
         return ResponseEntity.ok(response);

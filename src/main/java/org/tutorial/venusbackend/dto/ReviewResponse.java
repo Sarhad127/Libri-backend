@@ -13,4 +13,5 @@ public class ReviewResponse {
     private String comment;
     private String firstName;
     private LocalDateTime createdAt;
+    private Long userId;
 }

@@ -2,7 +2,6 @@ package org.tutorial.venusbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.model.Cart;
@@ -14,6 +13,7 @@ import org.tutorial.venusbackend.repository.CartRepository;
 import org.tutorial.venusbackend.dto.CartItemRequest;
 import org.tutorial.venusbackend.dto.CartItemResponse;
 import org.tutorial.venusbackend.repository.MyUserRepository;
+import org.tutorial.venusbackend.service.JwtService;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,11 +29,13 @@ public class CartController {
     private final CartItemRepository cartItemRepository;
     private final BookRepository bookRepository;
     private final MyUserRepository userRepository;
-
+    private final JwtService jwtService;
 
     @GetMapping
-    public ResponseEntity<List<CartItemResponse>> getCart(Authentication authentication) {
-        MyUser user = getAuthenticatedUser(authentication);
+    public ResponseEntity<List<CartItemResponse>> getCart(@RequestHeader("Authorization") String authHeader) {
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(401).build();
+
         Cart cart = getOrCreateCart(user);
 
         List<CartItemResponse> items = cartItemRepository.findByCart(cart)
@@ -45,16 +47,12 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<CartItemResponse> addToCart(Authentication authentication,
+    public ResponseEntity<CartItemResponse> addToCart(@RequestHeader("Authorization") String authHeader,
                                                       @RequestBody CartItemRequest request) {
-        MyUser user = getAuthenticatedUser(authentication);
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(401).build();
 
-        Cart cart = cartRepository.findByUser(user)
-                .orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setUser(user);
-                    return cartRepository.save(newCart);
-                });
+        Cart cart = getOrCreateCart(user);
 
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -75,10 +73,11 @@ public class CartController {
     }
 
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<CartItemResponse> updateCartItem(Authentication authentication,
+    public ResponseEntity<CartItemResponse> updateCartItem(@RequestHeader("Authorization") String authHeader,
                                                            @PathVariable Long cartItemId,
                                                            @RequestBody CartItemRequest request) {
-        MyUser user = getAuthenticatedUser(authentication);
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(401).build();
 
         CartItem item = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
@@ -94,9 +93,10 @@ public class CartController {
     }
 
     @DeleteMapping("/{cartItemId}")
-    public ResponseEntity<Map<String, String>> removeCartItem(Authentication authentication,
+    public ResponseEntity<Map<String, String>> removeCartItem(@RequestHeader("Authorization") String authHeader,
                                                               @PathVariable Long cartItemId) {
-        MyUser user = getAuthenticatedUser(authentication);
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(401).build();
 
         CartItem item = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
@@ -106,7 +106,6 @@ public class CartController {
         }
 
         Cart cart = item.getCart();
-
         cart.getItems().remove(item);
         cartItemRepository.delete(item);
         cartItemRepository.flush();
@@ -118,14 +117,28 @@ public class CartController {
         return ResponseEntity.ok(Collections.singletonMap("message", "Cart item removed"));
     }
 
-    private MyUser getAuthenticatedUser(Authentication authentication) {
-        String email = authentication.getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
     private Cart getOrCreateCart(MyUser user) {
         return cartRepository.findByUser(user)
-                .orElse(null);
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
+    }
+
+    private MyUser getUserFromToken(String authHeader) {
+        System.out.println("Auth header: " + authHeader);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+
+        String token = authHeader.substring(7);
+        String email;
+        try {
+            email = jwtService.extractUsername(token);
+        } catch (Exception e) {
+            System.out.println("JWT parse error: " + e.getMessage());
+            return null;
+        }
+
+        return userRepository.findByEmail(email).orElse(null);
     }
 }
