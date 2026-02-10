@@ -31,24 +31,8 @@ public class ReviewController {
             @RequestBody ReviewRequest request,
             @RequestHeader("Authorization") String authHeader
     ) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Missing or invalid Authorization header");
-        }
-
-        String token = authHeader.substring(7);
-        String email;
-        try {
-            email = jwtService.extractUsername(token);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid token: " + e.getMessage());
-        }
-
-        MyUser user = userRepository.findByEmail(email).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-        }
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -94,5 +78,72 @@ public class ReviewController {
                 .toList();
 
         return ResponseEntity.ok(reviewResponses);
+    }
+
+    @PutMapping("/reviews/{reviewId}")
+    public ResponseEntity<?> updateReview(
+            @PathVariable Long reviewId,
+            @RequestBody ReviewRequest request,
+            @RequestHeader("Authorization") String authHeader
+    ) {
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        if (!review.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only edit your own review");
+        }
+
+        review.setRating(request.getRating());
+        review.setComment(request.getComment());
+
+        Review saved = reviewRepository.save(review);
+
+        ReviewResponse response = new ReviewResponse(
+                saved.getId(),
+                saved.getRating(),
+                saved.getComment(),
+                saved.getUser() != null && saved.getUser().getFirstName() != null
+                        ? saved.getUser().getFirstName()
+                        : "Anonymous",
+                saved.getCreatedAt()
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<?> deleteReview(
+            @PathVariable Long reviewId,
+            @RequestHeader("Authorization") String authHeader
+    ) {
+        MyUser user = getUserFromToken(authHeader);
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        if (!review.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own review");
+        }
+
+        reviewRepository.delete(review);
+        return ResponseEntity.ok("Review deleted successfully");
+    }
+
+    private MyUser getUserFromToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+
+        String token = authHeader.substring(7);
+        String email;
+        try {
+            email = jwtService.extractUsername(token);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return userRepository.findByEmail(email).orElse(null);
     }
 }
