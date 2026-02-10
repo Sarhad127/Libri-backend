@@ -59,7 +59,6 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("/{bookId}/reviews")
     public ResponseEntity<?> getReviewsForBook(@PathVariable Long bookId) {
         Book book = bookRepository.findById(bookId)
