@@ -3,13 +3,13 @@ package org.tutorial.venusbackend.controller;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.tutorial.venusbackend.dto.BookDTO;
 import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.model.MyUser;
 import org.tutorial.venusbackend.repository.BookRepository;
 import org.tutorial.venusbackend.repository.MyUserRepository;
+import org.tutorial.venusbackend.service.AuthHelperService;
 
 import java.util.Collections;
 import java.util.Set;
@@ -22,13 +22,14 @@ public class FavoriteController {
 
     private final MyUserRepository userRepository;
     private final BookRepository bookRepository;
+    private final AuthHelperService authHelperService;
 
     @Transactional
     @PostMapping("/{bookId}")
-    public ResponseEntity<?> addFavorite(@PathVariable Long bookId, Authentication authentication) {
-        String email = authentication.getName();
-        MyUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> addFavorite(@RequestHeader("Authorization") String authHeader,
+                                         @PathVariable Long bookId) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -43,10 +44,10 @@ public class FavoriteController {
 
     @Transactional
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<?> removeFavorite(@PathVariable Long bookId, Authentication authentication) {
-        String email = authentication.getName();
-        MyUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> removeFavorite(@RequestHeader("Authorization") String authHeader,
+                                            @PathVariable Long bookId) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -60,13 +61,13 @@ public class FavoriteController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getFavorites(Authentication authentication) {
-        String email = authentication.getName();
-        MyUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> getFavorites(@RequestHeader("Authorization") String authHeader) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Set<BookDTO> favoriteDTOs = user.getFavoriteBooks().stream()
-                .map(BookDTO::new).collect(Collectors.toSet());
+                .map(BookDTO::new)
+                .collect(Collectors.toSet());
 
         return ResponseEntity.ok(favoriteDTOs);
     }

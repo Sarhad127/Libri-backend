@@ -10,9 +10,8 @@ import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.model.MyUser;
 import org.tutorial.venusbackend.model.Review;
 import org.tutorial.venusbackend.repository.BookRepository;
-import org.tutorial.venusbackend.repository.MyUserRepository;
 import org.tutorial.venusbackend.repository.ReviewRepository;
-import org.tutorial.venusbackend.service.JwtService;
+import org.tutorial.venusbackend.service.AuthHelperService;
 
 import java.time.LocalDateTime;
 
@@ -21,18 +20,16 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ReviewController {
 
+    private final AuthHelperService authHelperService;
     private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
-    private final MyUserRepository userRepository;
-    private final JwtService jwtService;
 
     @PostMapping("/reviews")
     public ResponseEntity<?> createReview(
             @RequestBody ReviewRequest request,
-            @RequestHeader("Authorization") String authHeader
-    ) {
-        MyUser user = getUserFromToken(authHeader);
-        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            @RequestHeader("Authorization") String authHeader) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -68,6 +65,7 @@ public class ReviewController {
 
     @GetMapping("/{bookId}/reviews")
     public ResponseEntity<?> getReviewsForBook(@PathVariable Long bookId) {
+
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -91,10 +89,9 @@ public class ReviewController {
     public ResponseEntity<?> updateReview(
             @PathVariable Long reviewId,
             @RequestBody ReviewRequest request,
-            @RequestHeader("Authorization") String authHeader
-    ) {
-        MyUser user = getUserFromToken(authHeader);
-        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            @RequestHeader("Authorization") String authHeader) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
@@ -125,10 +122,9 @@ public class ReviewController {
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<?> deleteReview(
             @PathVariable Long reviewId,
-            @RequestHeader("Authorization") String authHeader
-    ) {
-        MyUser user = getUserFromToken(authHeader);
-        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            @RequestHeader("Authorization") String authHeader) {
+
+        MyUser user = authHelperService.authenticateUser(authHeader);
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
@@ -139,19 +135,5 @@ public class ReviewController {
 
         reviewRepository.delete(review);
         return ResponseEntity.ok("Review deleted successfully");
-    }
-
-    private MyUser getUserFromToken(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
-
-        String token = authHeader.substring(7);
-        String email;
-        try {
-            email = jwtService.extractUsername(token);
-        } catch (Exception e) {
-            return null;
-        }
-
-        return userRepository.findByEmail(email).orElse(null);
     }
 }
