@@ -2,13 +2,13 @@ package org.tutorial.venusbackend.dto;
 
 import lombok.Data;
 import org.tutorial.venusbackend.model.Book;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class BookDTO {
+
     private Long id;
     private String title;
     private String author;
