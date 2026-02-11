@@ -4,6 +4,7 @@ import lombok.Data;
 import org.tutorial.venusbackend.model.Order;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ public class OrderResponse {
     private String status;
     private BigDecimal totalAmount;
     private List<OrderItemResponse> items;
+    private LocalDateTime createdAt;
 
     public static OrderResponse fromEntity(Order order) {
         OrderResponse response = new OrderResponse();
@@ -23,6 +25,7 @@ public class OrderResponse {
         response.setItems(order.getItems().stream()
                 .map(OrderItemResponse::fromEntity)
                 .collect(Collectors.toList()));
+        response.setCreatedAt(order.getCreatedAt());
         return response;
     }
 }

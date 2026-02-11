@@ -14,6 +14,7 @@ import org.tutorial.venusbackend.dto.CartItemRequest;
 import org.tutorial.venusbackend.dto.OrderResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -63,6 +64,7 @@ public class OrderController {
 
         order.setItems(items);
         order.setTotalAmount(total);
+        order.setCreatedAt(LocalDateTime.now());
 
         orderRepository.save(order);
 
