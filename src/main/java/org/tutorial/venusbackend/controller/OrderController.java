@@ -16,6 +16,7 @@ import org.tutorial.venusbackend.dto.OrderResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,7 +41,8 @@ public class OrderController {
 
         Order order = new Order();
         order.setUser(user);
-        order.setStatus(Order.Status.PLACED);
+        order.setStatus(Order.Status.PAID);
+        order.setOrderNumber(generateOrderNumber());
 
         BigDecimal total = BigDecimal.ZERO;
         List<OrderItem> items = new ArrayList<>();
@@ -80,5 +82,11 @@ public class OrderController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);
+    }
+
+    private String generateOrderNumber() {
+        return String.valueOf(
+                100_000_000L + ThreadLocalRandom.current().nextLong(900_000_000L)
+        );
     }
 }

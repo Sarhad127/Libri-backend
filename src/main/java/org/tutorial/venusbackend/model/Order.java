@@ -26,6 +26,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false, updatable = false)
+    private String orderNumber;
+
     @ManyToOne
     private MyUser user;
 

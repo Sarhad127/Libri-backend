@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 @Data
 public class OrderResponse {
 
-    private Long id;
+    private String orderNumber;
     private String status;
     private BigDecimal totalAmount;
     private List<OrderItemResponse> items;
 
     public static OrderResponse fromEntity(Order order) {
         OrderResponse response = new OrderResponse();
-        response.setId(order.getId());
+        response.setOrderNumber(order.getOrderNumber());
         response.setStatus(order.getStatus().name());
         response.setTotalAmount(order.getTotalAmount());
         response.setItems(order.getItems().stream()
