@@ -2,6 +2,7 @@ package org.tutorial.venusbackend.dto;
 
 import lombok.Data;
 import org.tutorial.venusbackend.model.Book;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +27,7 @@ public class BookDTO {
     private List<String> borrowHistory;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private int reviewCount;
 
     public BookDTO(Book book) {
         this.id = book.getId();
@@ -44,5 +46,6 @@ public class BookDTO {
         this.createdAt = book.getCreatedAt();
         this.updatedAt = book.getUpdatedAt();
         this.price = book.getPrice();
+        this.reviewCount = book.getReviews() != null ? book.getReviews().size() : 0;
     }
 }
