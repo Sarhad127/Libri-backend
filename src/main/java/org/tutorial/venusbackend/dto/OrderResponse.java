@@ -16,6 +16,8 @@ public class OrderResponse {
     private BigDecimal totalAmount;
     private List<OrderItemResponse> items;
     private LocalDateTime createdAt;
+    private String shippingMethodLabel;
+    private BigDecimal shippingCost;
 
     public static OrderResponse fromEntity(Order order) {
         OrderResponse response = new OrderResponse();
@@ -26,6 +28,8 @@ public class OrderResponse {
                 .map(OrderItemResponse::fromEntity)
                 .collect(Collectors.toList()));
         response.setCreatedAt(order.getCreatedAt());
+        response.setShippingMethodLabel(order.getShippingMethodLabel());
+        response.setShippingCost(order.getShippingCost());
         return response;
     }
 }

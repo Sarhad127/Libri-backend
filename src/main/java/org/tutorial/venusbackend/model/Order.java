@@ -34,6 +34,12 @@ public class Order {
 
     private BigDecimal totalAmount;
 
+    @Column(nullable = false)
+    private String shippingMethodLabel;
+
+    @Column(nullable = false)
+    private BigDecimal shippingCost = BigDecimal.ZERO;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

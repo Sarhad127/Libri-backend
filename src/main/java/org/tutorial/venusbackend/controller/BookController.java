@@ -21,7 +21,8 @@ public class BookController {
 
     @GetMapping("/books")
     public List<BookDTO> getBooks() {
-        return bookRepository.findAll().stream()
+        return bookService.getAllBooksDefaultSorted()
+                .stream()
                 .map(BookDTO::new)
                 .toList();
     }

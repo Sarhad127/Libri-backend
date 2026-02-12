@@ -3,6 +3,8 @@ package org.tutorial.venusbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tutorial.venusbackend.dto.CreateOrderRequest;
+import org.tutorial.venusbackend.dto.ShippingMethodRequest;
 import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.model.MyUser;
 import org.tutorial.venusbackend.model.Order;
@@ -32,11 +34,14 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity<OrderResponse> createOrder(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody List<CartItemRequest> cartItems) {
+            @RequestBody CreateOrderRequest request) {
 
         MyUser user = authHelperService.authenticateUser(authHeader);
 
-        if (cartItems.isEmpty()) {
+        List<CartItemRequest> cartItems = request.getCartItems();
+        ShippingMethodRequest shippingMethod = request.getShippingMethod();
+
+        if (cartItems.isEmpty() || shippingMethod == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -63,7 +68,9 @@ public class OrderController {
         }
 
         order.setItems(items);
-        order.setTotalAmount(total);
+        order.setTotalAmount(total.add(shippingMethod.getPrice()));
+        order.setShippingMethodLabel(shippingMethod.getLabel());
+        order.setShippingCost(shippingMethod.getPrice());
         order.setCreatedAt(LocalDateTime.now());
 
         orderRepository.save(order);
