@@ -32,6 +32,7 @@ public class OrderResponse {
         ShippingMethod method = order.getShippingMethod();
         if (method != null) {
             response.setShippingCost(method.getCost());
+            response.setShippingMethodLabel(method.getLabel());
         }
         return response;
     }
