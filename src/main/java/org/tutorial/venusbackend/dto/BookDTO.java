@@ -28,6 +28,7 @@ public class BookDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int reviewCount;
+    private Integer pages;
 
     public BookDTO(Book book) {
         this.id = book.getId();
@@ -47,5 +48,6 @@ public class BookDTO {
         this.updatedAt = book.getUpdatedAt();
         this.price = book.getPrice();
         this.reviewCount = book.getReviews() != null ? book.getReviews().size() : 0;
+        this.pages = book.getPages();
     }
 }

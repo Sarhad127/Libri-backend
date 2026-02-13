@@ -52,6 +52,7 @@ public class Book {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private Integer pages;
 
     @Column(nullable = false)
     private BigDecimal price;

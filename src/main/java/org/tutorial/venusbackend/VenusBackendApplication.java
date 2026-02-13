@@ -53,6 +53,7 @@ public class VenusBackendApplication {
                 book.setReviews(new ArrayList<>());
                 book.setFavoritedBy(new ArrayList<>());
                 book.setPrice(BigDecimal.valueOf(249.00));
+                book.setPages(756);
 
                 bookRepository.save(book);
                 System.out.println("Seeded book: " + book.getTitle());
@@ -88,6 +89,7 @@ public class VenusBackendApplication {
                 book2.setReviews(new ArrayList<>());
                 book2.setFavoritedBy(new ArrayList<>());
                 book2.setPrice(BigDecimal.valueOf(449.00));
+                book2.setPages(1250);
 
                 bookRepository.save(book2);
                 System.out.println("Seeded book: " + book2.getTitle());
@@ -113,6 +115,7 @@ public class VenusBackendApplication {
                 book3.setReviews(new ArrayList<>());
                 book3.setFavoritedBy(new ArrayList<>());
                 book3.setPrice(BigDecimal.valueOf(249.00));
+                book3.setPages(658);
 
                 bookRepository.save(book3);
                 System.out.println("Seeded book: " + book3.getTitle());
@@ -138,6 +141,7 @@ public class VenusBackendApplication {
                 book4.setReviews(new ArrayList<>());
                 book4.setFavoritedBy(new ArrayList<>());
                 book4.setPrice(BigDecimal.valueOf(249.00));
+                book4.setPages(1630);
 
                 bookRepository.save(book4);
                 System.out.println("Seeded book: " + book4.getTitle());
@@ -163,6 +167,7 @@ public class VenusBackendApplication {
                 book5.setReviews(new ArrayList<>());
                 book5.setFavoritedBy(new ArrayList<>());
                 book5.setPrice(BigDecimal.valueOf(209.00));
+                book5.setPages(1402);
 
                 bookRepository.save(book5);
                 System.out.println("Seeded book: " + book5.getTitle());
@@ -188,6 +193,7 @@ public class VenusBackendApplication {
                 book6.setReviews(new ArrayList<>());
                 book6.setFavoritedBy(new ArrayList<>());
                 book6.setPrice(BigDecimal.valueOf(129.00));
+                book6.setPages(1380);
 
                 bookRepository.save(book6);
                 System.out.println("Seeded book: " + book6.getTitle());
