@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.tutorial.venusbackend.model.Author;
 import org.tutorial.venusbackend.model.Book;
+import org.tutorial.venusbackend.model.enums.Category;
+import org.tutorial.venusbackend.model.enums.Format;
+import org.tutorial.venusbackend.model.enums.Language;
 import org.tutorial.venusbackend.repository.AuthorRepository;
 import org.tutorial.venusbackend.repository.BookRepository;
 
@@ -37,9 +40,9 @@ public class VenusBackendApplication {
             if (!exists) {
                 Book book = new Book();
                 book.setTitle("Harry Potter and the Philosopher's Stone");
-                book.setCategory("Fantasy");
-                book.setFormat("Hardcover");
-                book.setLanguage("Swedish");
+                book.setCategory(Category.FANTASY);
+                book.setFormat(Format.HARDCOVER);
+                book.setLanguage(Language.SWEDISH);
                 book.setSeriesName("Harry Potter");
                 book.setSeriesNumber(1);
                 book.setPublisher("Bloomsbury");
@@ -73,9 +76,9 @@ public class VenusBackendApplication {
             if (!exists2) {
                 Book book2 = new Book();
                 book2.setTitle("Harry Potter and the Chamber of Secrets");
-                book2.setCategory("Fantasy");
-                book2.setFormat("Paperback");
-                book2.setLanguage("English");
+                book2.setCategory(Category.ROMANCE);
+                book2.setFormat(Format.PAPERBACK);
+                book2.setLanguage(Language.ENGLISH);
                 book2.setSeriesName("Harry Potter");
                 book2.setSeriesNumber(2);
                 book2.setPublisher("Bloomsbury");
@@ -99,9 +102,9 @@ public class VenusBackendApplication {
             if (!exists3) {
                 Book book3 = new Book();
                 book3.setTitle("Harry Potter and the Prisoner of Azkaban");
-                book3.setCategory("Fantasy");
-                book3.setFormat("Hardcover");
-                book3.setLanguage("English");
+                book3.setCategory(Category.CRIME);
+                book3.setFormat(Format.HARDCOVER);
+                book3.setLanguage(Language.ENGLISH);
                 book3.setSeriesName("Harry Potter");
                 book3.setSeriesNumber(3);
                 book3.setPublisher("Bloomsbury");
@@ -125,9 +128,9 @@ public class VenusBackendApplication {
             if (!exists4) {
                 Book book4 = new Book();
                 book4.setTitle("Harry Potter and the Goblet of Fire");
-                book4.setCategory("Fantasy");
-                book4.setFormat("Paperback");
-                book4.setLanguage("English");
+                book4.setCategory(Category.SCIENCE);
+                book4.setFormat(Format.PAPERBACK);
+                book4.setLanguage(Language.ENGLISH);
                 book4.setSeriesName("Harry Potter");
                 book4.setSeriesNumber(4);
                 book4.setPublisher("Bloomsbury");
@@ -151,9 +154,9 @@ public class VenusBackendApplication {
             if (!exists5) {
                 Book book5 = new Book();
                 book5.setTitle("Harry Potter and the Order of the Phoenix");
-                book5.setCategory("Fantasy");
-                book5.setFormat("Hardcover");
-                book5.setLanguage("Swedish");
+                book5.setCategory(Category.HISTORY);
+                book5.setFormat(Format.HARDCOVER);
+                book5.setLanguage(Language.SWEDISH);
                 book5.setSeriesName("Harry Potter");
                 book5.setSeriesNumber(5);
                 book5.setPublisher("Bloomsbury");
@@ -177,9 +180,9 @@ public class VenusBackendApplication {
             if (!exists6) {
                 Book book6 = new Book();
                 book6.setTitle("Harry Potter and the Half-Blood Prince");
-                book6.setCategory("Fantasy");
-                book6.setFormat("Paperback");
-                book6.setLanguage("English");
+                book6.setCategory(Category.ADVENTURE);
+                book6.setFormat(Format.PAPERBACK);
+                book6.setLanguage(Language.ENGLISH);
                 book6.setSeriesName("Harry Potter");
                 book6.setSeriesNumber(6);
                 book6.setPublisher("Bloomsbury");

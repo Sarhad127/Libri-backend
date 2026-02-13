@@ -29,8 +29,8 @@ public class CartItemResponse {
                 item.getQuantity(),
                 book.getImageUrl(),
                 book.getAuthor() != null ? book.getAuthor().getName() : "Unknown",
-                book.getFormat(),
-                book.getLanguage(),
+                book.getFormat() != null ? book.getFormat().name() : null,
+                book.getLanguage() != null ? book.getLanguage().name() : null,
                 book.getPrice()
         );
     }

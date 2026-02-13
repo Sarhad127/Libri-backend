@@ -36,9 +36,9 @@ public class BookDTO {
         this.imageUrl = book.getImageUrl();
         this.author = book.getAuthor() != null ? book.getAuthor().getName() : null;
         this.description = book.getDescription();
-        this.format = book.getFormat();
-        this.language = book.getLanguage();
-        this.category = book.getCategory();
+        this.format = book.getFormat() != null ? book.getFormat().getDisplayName() : null;
+        this.language = book.getLanguage() != null ? book.getLanguage().getDisplayName() : null;
+        this.category = book.getCategory() != null ? book.getCategory().getDisplayName() : null;
         this.publisher = book.getPublisher();
         this.seriesName = book.getSeriesName();
         this.seriesNumber = book.getSeriesNumber();

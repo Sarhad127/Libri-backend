@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.tutorial.venusbackend.model.enums.Category;
+import org.tutorial.venusbackend.model.enums.Format;
+import org.tutorial.venusbackend.model.enums.Language;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,9 +28,15 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    private String category;
-    private String format;
-    private String language;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private Format format;
+
+    @Enumerated(EnumType.STRING)
+    private Language language;
+
     private String seriesName;
     private Integer seriesNumber;
     private String publisher;

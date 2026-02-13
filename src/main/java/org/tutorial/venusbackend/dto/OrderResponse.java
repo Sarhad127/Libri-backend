@@ -2,6 +2,7 @@ package org.tutorial.venusbackend.dto;
 
 import lombok.Data;
 import org.tutorial.venusbackend.model.Order;
+import org.tutorial.venusbackend.model.enums.ShippingMethod;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -28,8 +29,10 @@ public class OrderResponse {
                 .map(OrderItemResponse::fromEntity)
                 .collect(Collectors.toList()));
         response.setCreatedAt(order.getCreatedAt());
-        response.setShippingMethodLabel(order.getShippingMethodLabel());
-        response.setShippingCost(order.getShippingCost());
+        ShippingMethod method = order.getShippingMethod();
+        if (method != null) {
+            response.setShippingCost(method.getCost());
+        }
         return response;
     }
 }

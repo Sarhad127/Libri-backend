@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tutorial.venusbackend.dto.CreateOrderRequest;
-import org.tutorial.venusbackend.dto.ShippingMethodRequest;
 import org.tutorial.venusbackend.model.Book;
 import org.tutorial.venusbackend.model.MyUser;
 import org.tutorial.venusbackend.model.Order;
 import org.tutorial.venusbackend.model.OrderItem;
+import org.tutorial.venusbackend.model.enums.ShippingMethod;
 import org.tutorial.venusbackend.repository.BookRepository;
 import org.tutorial.venusbackend.repository.OrderRepository;
 import org.tutorial.venusbackend.service.AuthHelperService;
@@ -39,7 +39,7 @@ public class OrderController {
         MyUser user = authHelperService.authenticateUser(authHeader);
 
         List<CartItemRequest> cartItems = request.getCartItems();
-        ShippingMethodRequest shippingMethod = request.getShippingMethod();
+        ShippingMethod shippingMethod = request.getShippingMethod();
 
         if (cartItems.isEmpty() || shippingMethod == null) {
             return ResponseEntity.badRequest().build();
@@ -68,9 +68,8 @@ public class OrderController {
         }
 
         order.setItems(items);
-        order.setTotalAmount(total.add(shippingMethod.getPrice()));
-        order.setShippingMethodLabel(shippingMethod.getLabel());
-        order.setShippingCost(shippingMethod.getPrice());
+        order.setTotalAmount(total.add(shippingMethod.getCost()));
+        order.setShippingMethod(shippingMethod);
         order.setCreatedAt(LocalDateTime.now());
 
         orderRepository.save(order);

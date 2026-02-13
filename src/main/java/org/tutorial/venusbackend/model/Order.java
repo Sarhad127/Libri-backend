@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.tutorial.venusbackend.model.enums.ShippingMethod;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,11 +35,9 @@ public class Order {
 
     private BigDecimal totalAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String shippingMethodLabel;
-
-    @Column(nullable = false)
-    private BigDecimal shippingCost = BigDecimal.ZERO;
+    private ShippingMethod shippingMethod;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
