@@ -38,6 +38,11 @@ public class LoginController {
             MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
             MyUser user = userDetails.getUser();
 
+            if (!user.isActive()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Your account is inactive. Please contact support.");
+            }
+
             String jwt = jwtService.generateToken(userDetails);
 
             return ResponseEntity.ok(Map.of(
