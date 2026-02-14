@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.tutorial</groupId>
-    <artifactId>Venus-backend</artifactId>
+    <artifactId>Libri-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Venus-backend</name>
     <description>Venus-backend</description>
