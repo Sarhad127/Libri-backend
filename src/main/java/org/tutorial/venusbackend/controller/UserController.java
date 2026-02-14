@@ -51,6 +51,7 @@ public class UserController {
 
         List<UserListDto> users = userRepository.findAll().stream()
                 .map(user -> new UserListDto(
+                        user.getId(),
                         user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),
