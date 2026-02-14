@@ -49,8 +49,8 @@ public class BookImportService {
                     Category category = Category.valueOf(((String) data.get("category")).toUpperCase());
                     Format format = Format.valueOf(((String) data.get("format")).toUpperCase());
                     Language language = Language.valueOf(((String) data.get("language")).toUpperCase());
-                    String seriesName = (String) data.get("series_name");
-                    Integer seriesNumber = data.get("series_number") != null ? ((Number) data.get("series_number")).intValue() : null;
+                    String series_name = (String) data.get("series_name");
+                    Integer series_number = data.get("series_number") != null ? ((Number) data.get("series_number")).intValue() : null;
                     String publisher = (String) data.get("publisher");
                     String description = (String) data.get("description");
                     String isbn = (String) data.get("isbn");
@@ -77,8 +77,8 @@ public class BookImportService {
                         book.setCategory(category);
                         book.setFormat(format);
                         book.setLanguage(language);
-                        book.setSeriesName(seriesName);
-                        book.setSeriesNumber(seriesNumber);
+                        book.setSeriesName(series_name);
+                        book.setSeriesNumber(series_number);
                         book.setPublisher(publisher);
                         book.setDescription(description);
                         book.setIsbn(isbn);
@@ -98,13 +98,13 @@ public class BookImportService {
                         if (!existingBook.getCategory().equals(category)) { existingBook.setCategory(category); changed = true; }
                         if (!existingBook.getFormat().equals(format)) { existingBook.setFormat(format); changed = true; }
                         if (!existingBook.getLanguage().equals(language)) { existingBook.setLanguage(language); changed = true; }
-                        if ((existingBook.getSeriesName() == null && seriesName != null) ||
-                                (existingBook.getSeriesName() != null && !existingBook.getSeriesName().equals(seriesName))) {
-                            existingBook.setSeriesName(seriesName); changed = true;
+                        if ((existingBook.getSeriesName() == null && series_name != null) ||
+                                (existingBook.getSeriesName() != null && !existingBook.getSeriesName().equals(series_name))) {
+                            existingBook.setSeriesName(series_name); changed = true;
                         }
-                        if ((existingBook.getSeriesNumber() == null && seriesNumber != null) ||
-                                (existingBook.getSeriesNumber() != null && !existingBook.getSeriesNumber().equals(seriesNumber))) {
-                            existingBook.setSeriesNumber(seriesNumber); changed = true;
+                        if ((existingBook.getSeriesNumber() == null && series_number != null) ||
+                                (existingBook.getSeriesNumber() != null && !existingBook.getSeriesNumber().equals(series_number))) {
+                            existingBook.setSeriesNumber(series_number); changed = true;
                         }
                         if (!existingBook.getPublisher().equals(publisher)) { existingBook.setPublisher(publisher); changed = true; }
                         if (!existingBook.getDescription().equals(description)) { existingBook.setDescription(description); changed = true; }
