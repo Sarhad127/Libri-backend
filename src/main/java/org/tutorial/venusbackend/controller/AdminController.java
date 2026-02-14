@@ -2,6 +2,7 @@ package org.tutorial.venusbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.tutorial.venusbackend.exceptions.UnauthorizedException;
 import org.tutorial.venusbackend.model.MyUser;
@@ -19,6 +20,7 @@ public class AdminController {
     private final BookImportService bookImportService;
     private final AuthHelperService authHelperService;
     private final MyUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/import-books")
     public ResponseEntity<Map<String, Integer>> importBooks(@RequestHeader("Authorization") String authHeader) {
@@ -60,6 +62,56 @@ public class AdminController {
         return ResponseEntity.ok(Map.of(
                 "userId", savedUser.getId(),
                 "active", savedUser.isActive()
+        ));
+    }
+
+    @PostMapping("/create-admin")
+    public ResponseEntity<Map<String, Object>> createAdminUser(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> requestBody
+    ) {
+        MyUser admin = authHelperService.authenticateUser(authHeader);
+
+        if (admin.getRole() != MyUser.Role.ADMIN) {
+            throw new UnauthorizedException();
+        }
+
+        String email = requestBody.get("email");
+        String password = requestBody.get("password");
+        String firstName = requestBody.get("firstName");
+        String lastName = requestBody.get("lastName");
+
+        if (email == null || email.isBlank() ||
+                password == null || password.isBlank() ||
+                firstName == null || firstName.isBlank() ||
+                lastName == null || lastName.isBlank()) {
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Email, password, first name, and last name are required."));
+        }
+
+        if (userRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "User with this email already exists."));
+        }
+
+        MyUser newAdmin = new MyUser();
+        newAdmin.setEmail(email);
+        newAdmin.setPassword(passwordEncoder.encode(password));
+        newAdmin.setRole(MyUser.Role.ADMIN);
+        newAdmin.setFirstName(firstName);
+        newAdmin.setLastName(lastName);
+        newAdmin.setActive(true);
+
+        userRepository.save(newAdmin);
+
+        return ResponseEntity.ok(Map.of(
+                "userId", newAdmin.getId(),
+                "email", newAdmin.getEmail(),
+                "firstName", newAdmin.getFirstName(),
+                "lastName", newAdmin.getLastName(),
+                "role", newAdmin.getRole().name(),
+                "active", newAdmin.isActive()
         ));
     }
 }
